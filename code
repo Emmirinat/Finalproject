@@ -1,0 +1,214 @@
+var currentScene = 1;
+
+//bitmoji code
+var drawBitmoji= function(Xpos,Ypos,bitmojiHeight){
+    noStroke();
+    
+    fill(181, 144, 85);//fill hair
+    ellipse(Xpos - (bitmojiHeight/150*31), Ypos + (bitmojiHeight/150*33), bitmojiHeight/150*15, bitmojiHeight/150*44);
+    fill(255,220,180);//fill skin
+    ellipse(Xpos, Ypos, bitmojiHeight/150*64, bitmojiHeight/150*81);//head
+    
+    //hair
+    fill(181, 144, 85);//fill hair
+    quad(Xpos - (bitmojiHeight/150*35), Ypos, Xpos - (bitmojiHeight/150*30), Ypos - (bitmojiHeight/150*32), Xpos - (bitmojiHeight/150*16), Ypos - (bitmojiHeight/150*40), Xpos - (bitmojiHeight/150*30), Ypos - (bitmojiHeight/150*8));//left hair
+    quad(Xpos + (bitmojiHeight/150*35), Ypos - (bitmojiHeight/150*11),Xpos + (bitmojiHeight/150*29), Ypos - (bitmojiHeight/150*32), Xpos + (bitmojiHeight/150*18), Ypos - (bitmojiHeight/150*39), Xpos + (bitmojiHeight/150*34), Ypos);//right hair
+    ellipse(Xpos, Ypos - (bitmojiHeight/150*34), bitmojiHeight/150*58, bitmojiHeight/150*14);//top hair
+    
+    //eyes
+    fill(105, 92, 58);//fill eyes
+    ellipse(Xpos - (bitmojiHeight/150*12), Ypos - (bitmojiHeight/150*5), bitmojiHeight/150*11, bitmojiHeight/150*8);
+    ellipse(Xpos + (bitmojiHeight/150*11),Ypos - (bitmojiHeight/150*5), bitmojiHeight/150*11, bitmojiHeight/150*8);
+    fill(0, 0, 0);//fill insid eyes
+    ellipse(Xpos - (bitmojiHeight/150*12), Ypos - (bitmojiHeight/150*5), bitmojiHeight/150*3, bitmojiHeight/150*3);
+    ellipse(Xpos + (bitmojiHeight/150*11), Ypos - (bitmojiHeight/150*5), bitmojiHeight/150*3, bitmojiHeight/150*3);
+    
+    //nose
+    fill(214, 178, 137);//fill nose
+    ellipse(Xpos - (bitmojiHeight/150*3), Ypos + (bitmojiHeight/150*12), bitmojiHeight/150*6, bitmojiHeight/150*4);
+    ellipse(Xpos + (bitmojiHeight/150*3), Ypos + (bitmojiHeight/150*12), bitmojiHeight/150*6, bitmojiHeight/150*4);
+    ellipse(Xpos, Ypos + (bitmojiHeight/150*8), bitmojiHeight/150*5, bitmojiHeight/150*12);
+    
+    //mouth
+    stroke(235, 91, 91);//lips
+    fill(255, 255, 255);//fill teeth
+    arc(Xpos, Ypos + (bitmojiHeight/150*24), bitmojiHeight/150*24, bitmojiHeight/150*13, 0, 180);//mouth
+    line(Xpos - (bitmojiHeight/150*13),Ypos + (bitmojiHeight/150*24), Xpos + (bitmojiHeight/150*12), Ypos + (bitmojiHeight/150*24));
+    
+    //shirt
+    noStroke();
+    fill(43, 52, 237);
+    rect(Xpos - (bitmojiHeight/150*41),Ypos + (bitmojiHeight/150*40), bitmojiHeight/150*84, bitmojiHeight/150*48);
+    
+    fill(255, 255, 255);
+    textSize(bitmojiHeight/150*38);
+    text("ER", Xpos - (bitmojiHeight/150*25), Ypos + (bitmojiHeight/150*78));
+};
+
+//first scene = opening scene 
+var drawScene1 = function() {
+    currentScene = 1;
+    background(179, 179, 179);
+    fill(0, 0, 0);
+    textSize(25);
+    //title
+    text("Title of the game", 70, 45);
+    textSize(12);
+    //description
+    text("description of the game", 50,100);
+    textSize(20);
+    text("By: Emma Rinat", 20, 370);
+    textSize(15);
+    drawBitmoji(84, 213, 130);
+};
+
+var drawScene2 = function() {
+    currentScene = 2;
+};
+
+var bomsSpeed = [];//array for boms speed
+var starsSpeed = [];//array for boms speed
+var numBoms = 200;
+var numStars = 100;
+
+//bitmoji 
+var Bitmoji = function(x, y) {
+    this.x = x;
+    this.y = y;
+    this.score = 0;
+};
+
+Bitmoji.prototype.draw = function() {
+    this.y = constrain(this.y, 12, height-30);
+    this.x = constrain(this.x, 10, width-10);
+    drawBitmoji(this.x, this.y, 50, 50);
+};
+
+var bitmoji1 = new Bitmoji(365,180);
+var bitmoji2 = new Bitmoji(35, 380);
+
+Bitmoji.prototype.up = function() {
+    drawBitmoji(this.x, this.y, 50, 50);
+    this.y -= 5;
+};
+
+Bitmoji.prototype.down = function() {
+    drawBitmoji(this.x, this.y, 50, 50);
+    this.y += 5;
+};
+
+Bitmoji.prototype.right = function() {
+    drawBitmoji(this.x, this.y, 50, 50);
+    this.x += 5;
+};
+
+Bitmoji.prototype.left = function() {
+    drawBitmoji(this.x, this.y, 50, 50);
+    this.x -= 5;
+};
+
+var Boms = function(x, y) {
+    this.x = x;
+    this.y = y;
+};
+
+Boms.prototype.draw = function() {
+    image(getImage("cute/Rock"), this.x, this.y , 30, 30);
+};
+
+var boms = [];
+for (var i = 0; i < numBoms; i++) {  
+    boms.push(new Boms(i * 100 + 500, random(0, 380)));
+    bomsSpeed.push(random(3,6));
+}
+
+Bitmoji.prototype.checkForBomsGrab = function(boms){
+    if ((boms.x >= (bitmoji1.x - 20) && boms.x <= (bitmoji1.x + 20)) &&
+        (boms.y >= (bitmoji1.y -25) && boms.y <= (bitmoji1.y + 25))) {
+        boms.y = -400;
+        this.boms++;
+        bitmoji1.score -=1;
+    }
+    if ((boms.x >= (bitmoji2.x - 20) && boms.x <= (bitmoji2.x + 20)) &&
+        (boms.y >= (bitmoji2.y -25) && boms.y <= (bitmoji2.y + 25))) {
+        boms.y = -400;
+        this.boms++;
+        bitmoji2.score -=1;
+    }
+};
+
+var Stars = function(x, y) {
+    this.x = x;
+    this.y = y;
+};
+
+Stars.prototype.draw = function() {
+    image(getImage("cute/Star"), this.x, this.y , 30, 30);
+};
+
+var stars = [];
+for (var i = 0; i < numStars; i++) {  
+    stars.push(new Stars(i * 100 + 500, random(0, 380)));
+    starsSpeed.push(random(1,4));
+}
+
+Bitmoji.prototype.checkForStarsGrab = function(stars){
+    if ((stars.x >= (bitmoji1.x - 20) && stars.x <= (bitmoji1.x + 20)) &&
+        (stars.y >= (bitmoji1.y -25) && stars.y <= (bitmoji1.y + 25))) {
+        stars.y = -400;
+        this.stars++;
+        bitmoji1.score +=2;
+    }
+    if ((stars.x >= (bitmoji2.x - 20) && stars.x <= (bitmoji2.x + 20)) &&
+        (stars.y >= (bitmoji2.y -25) && stars.y <= (bitmoji2.y + 25))) {
+        stars.y = -400;
+        this.stars++;
+        bitmoji2.score +=2;
+    }
+};
+
+//button
+var Button = function(config) {
+    this.x = config.x || 0;
+    this.y = config.y || 0;
+    this.width = config.width || 90;
+    this.height = config.height || 35;
+    this.label = config.label || "Click";
+};
+
+Button.prototype.draw = function() {
+    fill(0, 0, 0);
+    rect(this.x, this.y, this.width, this.height, 5);
+    fill(255, 255, 255);
+    textSize(25);
+    text(this.label, this.x + 20, this.y + 26);
+};
+
+Button.prototype.isMouseInside = function() {
+    return mouseX > this.x &&
+           mouseX < (this.x + this.width) &&
+           mouseY > this.y &&
+           mouseY < (this.y + this.height);
+};
+
+var start = new Button({
+    x: 295,
+    y: 300,
+    label: "Start"
+});
+
+var reset = new Button({
+    x: 295,
+    y: 360,
+    label: "Reset"
+});
+
+//buttons work
+mouseClicked = function() {
+    if (start.isMouseInside()) {
+        drawScene2();
+    }
+    if (reset.isMouseInside()) {
+        drawScene1();
+    }
+};
