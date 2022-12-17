@@ -1,7 +1,7 @@
 var currentScene = 1;
 
-//bitmoji code
-var drawBitmoji= function(Xpos,Ypos,bitmojiHeight){
+//bitmoji 1 code
+var drawBitmoji1= function(Xpos,Ypos,bitmojiHeight){
     noStroke();
     
     fill(181, 144, 85);//fill hair
@@ -42,7 +42,52 @@ var drawBitmoji= function(Xpos,Ypos,bitmojiHeight){
     
     fill(255, 255, 255);
     textSize(bitmojiHeight/150*38);
-    text("ER", Xpos - (bitmojiHeight/150*25), Ypos + (bitmojiHeight/150*78));
+    text("ER1", Xpos - (bitmojiHeight/150*34), Ypos + (bitmojiHeight/150*78));
+};
+
+//bitmoji code
+var drawBitmoji2= function(Xpos,Ypos,bitmojiHeight){
+    noStroke();
+    
+    fill(181, 144, 85);//fill hair
+    ellipse(Xpos - (bitmojiHeight/150*31), Ypos + (bitmojiHeight/150*33), bitmojiHeight/150*15, bitmojiHeight/150*44);
+    fill(255,220,180);//fill skin
+    ellipse(Xpos, Ypos, bitmojiHeight/150*64, bitmojiHeight/150*81);//head
+    
+    //hair
+    fill(181, 144, 85);//fill hair
+    quad(Xpos - (bitmojiHeight/150*35), Ypos, Xpos - (bitmojiHeight/150*30), Ypos - (bitmojiHeight/150*32), Xpos - (bitmojiHeight/150*16), Ypos - (bitmojiHeight/150*40), Xpos - (bitmojiHeight/150*30), Ypos - (bitmojiHeight/150*8));//left hair
+    quad(Xpos + (bitmojiHeight/150*35), Ypos - (bitmojiHeight/150*11),Xpos + (bitmojiHeight/150*29), Ypos - (bitmojiHeight/150*32), Xpos + (bitmojiHeight/150*18), Ypos - (bitmojiHeight/150*39), Xpos + (bitmojiHeight/150*34), Ypos);//right hair
+    ellipse(Xpos, Ypos - (bitmojiHeight/150*34), bitmojiHeight/150*58, bitmojiHeight/150*14);//top hair
+    
+    //eyes
+    fill(105, 92, 58);//fill eyes
+    ellipse(Xpos - (bitmojiHeight/150*12), Ypos - (bitmojiHeight/150*5), bitmojiHeight/150*11, bitmojiHeight/150*8);
+    ellipse(Xpos + (bitmojiHeight/150*11),Ypos - (bitmojiHeight/150*5), bitmojiHeight/150*11, bitmojiHeight/150*8);
+    fill(0, 0, 0);//fill insid eyes
+    ellipse(Xpos - (bitmojiHeight/150*12), Ypos - (bitmojiHeight/150*5), bitmojiHeight/150*3, bitmojiHeight/150*3);
+    ellipse(Xpos + (bitmojiHeight/150*11), Ypos - (bitmojiHeight/150*5), bitmojiHeight/150*3, bitmojiHeight/150*3);
+    
+    //nose
+    fill(214, 178, 137);//fill nose
+    ellipse(Xpos - (bitmojiHeight/150*3), Ypos + (bitmojiHeight/150*12), bitmojiHeight/150*6, bitmojiHeight/150*4);
+    ellipse(Xpos + (bitmojiHeight/150*3), Ypos + (bitmojiHeight/150*12), bitmojiHeight/150*6, bitmojiHeight/150*4);
+    ellipse(Xpos, Ypos + (bitmojiHeight/150*8), bitmojiHeight/150*5, bitmojiHeight/150*12);
+    
+    //mouth
+    stroke(235, 91, 91);//lips
+    fill(255, 255, 255);//fill teeth
+    arc(Xpos, Ypos + (bitmojiHeight/150*24), bitmojiHeight/150*24, bitmojiHeight/150*13, 0, 180);//mouth
+    line(Xpos - (bitmojiHeight/150*13),Ypos + (bitmojiHeight/150*24), Xpos + (bitmojiHeight/150*12), Ypos + (bitmojiHeight/150*24));
+    
+    //shirt
+    noStroke();
+    fill(199, 82, 32);
+    rect(Xpos - (bitmojiHeight/150*41),Ypos + (bitmojiHeight/150*40), bitmojiHeight/150*84, bitmojiHeight/150*48);
+    
+    fill(255, 255, 255);
+    textSize(bitmojiHeight/150*38);
+    text("ER2", Xpos - (bitmojiHeight/150*34), Ypos + (bitmojiHeight/150*78));
 };
 
 //first scene = opening scene 
@@ -52,14 +97,16 @@ var drawScene1 = function() {
     fill(0, 0, 0);
     textSize(25);
     //title
-    text("Title of the game", 70, 45);
-    textSize(12);
+    text("Rock Attack", 128, 45);
+    textSize(15);
     //description
-    text("description of the game", 50,100);
+    text("How to play the game?", 50,100);
+    textSize(12);
+    text("You can move your bitmoji using keyboards. \nPlayer 1 uses the arrorws, player 2 uses the AWSD keys.\nThe goal of the game is to avoid the rocks and to grab to stars.\nYou get 2 points if you hit a star, and lose 1 if get hit by a rock.\nThe first player that reach 30 point, WINS!!", 50,120);
     textSize(20);
     text("By: Emma Rinat", 20, 370);
     textSize(15);
-    drawBitmoji(84, 213, 130);
+    drawBitmoji1(84, 249, 130);
 };
 
 var drawScene2 = function() {
@@ -68,42 +115,72 @@ var drawScene2 = function() {
 
 var bomsSpeed = [];//array for bombs speed
 var starsSpeed = [];//array for stars speed
-var numBoms = 200;
-var numStars = 100;
+var numBoms = 300;
+var numStars = 200;
 
 //bitmoji 
-var Bitmoji = function(x, y) {
+var Bitmoji1 = function(x, y) {
     this.x = x;
     this.y = y;
     this.score = 0;
 };
 
-Bitmoji.prototype.draw = function() {
+Bitmoji1.prototype.draw = function() {
     this.y = constrain(this.y, 12, height-30);
     this.x = constrain(this.x, 10, width-10);
-    drawBitmoji(this.x, this.y, 50, 50);
+    drawBitmoji1(this.x, this.y, 50, 50);
 };
 
-var bitmoji1 = new Bitmoji(365,180);
-var bitmoji2 = new Bitmoji(35, 380);
-
-Bitmoji.prototype.up = function() {
-    drawBitmoji(this.x, this.y, 50, 50);
+Bitmoji1.prototype.up = function() {
+    drawBitmoji1(this.x, this.y, 50, 50);
     this.y -= 5;
 };
 
-Bitmoji.prototype.down = function() {
-    drawBitmoji(this.x, this.y, 50, 50);
+Bitmoji1.prototype.down = function() {
+    drawBitmoji1(this.x, this.y, 50, 50);
     this.y += 5;
 };
 
-Bitmoji.prototype.right = function() {
-    drawBitmoji(this.x, this.y, 50, 50);
+Bitmoji1.prototype.right = function() {
+    drawBitmoji1(this.x, this.y, 50, 50);
     this.x += 5;
 };
 
-Bitmoji.prototype.left = function() {
-    drawBitmoji(this.x, this.y, 50, 50);
+Bitmoji1.prototype.left = function() {
+    drawBitmoji1(this.x, this.y, 50, 50);
+    this.x -= 5;
+};
+
+//bitmoji 
+var Bitmoji2 = function(x, y) {
+    this.x = x;
+    this.y = y;
+    this.score = 0;
+};
+
+Bitmoji2.prototype.draw = function() {
+    this.y = constrain(this.y, 12, height-30);
+    this.x = constrain(this.x, 10, width-10);
+    drawBitmoji2(this.x, this.y, 50, 50);
+};
+
+Bitmoji2.prototype.up = function() {
+    drawBitmoji2(this.x, this.y, 50, 50);
+    this.y -= 5;
+};
+
+Bitmoji2.prototype.down = function() {
+    drawBitmoji2(this.x, this.y, 50, 50);
+    this.y += 5;
+};
+
+Bitmoji2.prototype.right = function() {
+    drawBitmoji2(this.x, this.y, 50, 50);
+    this.x += 5;
+};
+
+Bitmoji2.prototype.left = function() {
+    drawBitmoji2(this.x, this.y, 50, 50);
     this.x -= 5;
 };
 
@@ -122,13 +199,19 @@ for (var i = 0; i < numBoms; i++) {
     bomsSpeed.push(random(3,6));
 }
 
-Bitmoji.prototype.checkForBomsHit = function(boms){
+var bitmoji1 = new Bitmoji1(365,180);
+var bitmoji2 = new Bitmoji2(35, 380);
+
+Bitmoji1.prototype.checkForBomsHit = function(boms){
     if ((boms.x >= (bitmoji1.x - 20) && boms.x <= (bitmoji1.x + 20)) &&
         (boms.y >= (bitmoji1.y -25) && boms.y <= (bitmoji1.y + 25))) {
         boms.y = -400;
         this.boms++;
         bitmoji1.score -=1;
     }
+};
+
+Bitmoji2.prototype.checkForBomsHit = function(boms){
     if ((boms.x >= (bitmoji2.x - 20) && boms.x <= (bitmoji2.x + 20)) &&
         (boms.y >= (bitmoji2.y -25) && boms.y <= (bitmoji2.y + 25))) {
         boms.y = -400;
@@ -152,13 +235,16 @@ for (var i = 0; i < numStars; i++) {
     starsSpeed.push(random(1,4));
 }
 
-Bitmoji.prototype.checkForStarsHit = function(stars){
+Bitmoji1.prototype.checkForStarsHit = function(stars){
     if ((stars.x >= (bitmoji1.x - 20) && stars.x <= (bitmoji1.x + 20)) &&
         (stars.y >= (bitmoji1.y -25) && stars.y <= (bitmoji1.y + 25))) {
         stars.y = -400;
         this.stars++;
         bitmoji1.score +=2;
     }
+};
+
+Bitmoji2.prototype.checkForStarsHit = function(stars){
     if ((stars.x >= (bitmoji2.x - 20) && stars.x <= (bitmoji2.x + 20)) &&
         (stars.y >= (bitmoji2.y -25) && stars.y <= (bitmoji2.y + 25))) {
         stars.y = -400;
@@ -267,6 +353,5 @@ var draw = function(){
             text("Player 2 won!", 130, 220);
         }
     }
-    
-    
 };
+
