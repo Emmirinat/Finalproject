@@ -197,19 +197,10 @@ var start = new Button({
     label: "Start"
 });
 
-var reset = new Button({
-    x: 295,
-    y: 360,
-    label: "Reset"
-});
-
 //buttons work
 mouseClicked = function() {
     if (start.isMouseInside()) {
         drawScene2();
-    }
-    if (reset.isMouseInside()) {
-        drawScene1();
     }
 };
 //draw function that has the circle tag, for loops which includes if the bitmoji is tagged or not
@@ -272,10 +263,8 @@ var draw = function(){
         textSize(20);
         if(bitmoji1.score >= 30) {
             text("Player 1 won!", 130, 220);
-            reset.draw();
         } else if (bitmoji2.score >= 30){
             text("Player 2 won!", 130, 220);
-            reset.draw();
         }
     }
     
