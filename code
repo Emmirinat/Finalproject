@@ -205,7 +205,7 @@ for (var i = 0; i < numBoms; i++) {
 }
 
 //bitmoji players 
-var bitmoji1 = new Bitmoji1(365,180);
+var bitmoji1 = new Bitmoji1(35, 80);
 var bitmoji2 = new Bitmoji2(35, 380);
 
 //bitmoji1 hit bomb, score -1 and the bomb is gone 
