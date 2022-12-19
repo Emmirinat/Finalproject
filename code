@@ -45,7 +45,7 @@ var drawBitmoji1= function(Xpos,Ypos,bitmojiHeight){
     text("ER1", Xpos - (bitmojiHeight/150*34), Ypos + (bitmojiHeight/150*78));
 };
 
-//bitmoji code
+//bitmoji 2 code
 var drawBitmoji2= function(Xpos,Ypos,bitmojiHeight){
     noStroke();
     
@@ -97,7 +97,7 @@ var drawScene1 = function() {
     fill(0, 0, 0);
     textSize(25);
     //title
-    text("Rock Attack", 128, 45);
+    text("Rocks Attack", 128, 45);
     textSize(15);
     //description
     text("How to play the game?", 50,100);
@@ -109,16 +109,17 @@ var drawScene1 = function() {
     drawBitmoji1(84, 249, 130);
 };
 
+//second scene= app scene
 var drawScene2 = function() {
     currentScene = 2;
 };
 
 var bomsSpeed = [];//array for bombs speed
 var starsSpeed = [];//array for stars speed
-var numBoms = 300;
-var numStars = 200;
+var numBoms = 300;//number of bombs
+var numStars = 200;//number of stars
 
-//bitmoji 
+//bitmoji 1 object class
 var Bitmoji1 = function(x, y) {
     this.x = x;
     this.y = y;
@@ -151,7 +152,7 @@ Bitmoji1.prototype.left = function() {
     this.x -= 5;
 };
 
-//bitmoji 
+//bitmoji 2 object class
 var Bitmoji2 = function(x, y) {
     this.x = x;
     this.y = y;
@@ -184,6 +185,7 @@ Bitmoji2.prototype.left = function() {
     this.x -= 5;
 };
 
+//bombs object class
 var Boms = function(x, y) {
     this.x = x;
     this.y = y;
@@ -193,15 +195,18 @@ Boms.prototype.draw = function() {
     image(getImage("cute/Rock"), this.x, this.y , 30, 30);
 };
 
+//bomb's initial position and speed
 var boms = [];
 for (var i = 0; i < numBoms; i++) {  
     boms.push(new Boms(i * 100 + 500, random(0, 380)));
     bomsSpeed.push(random(3,6));
 }
 
+//bitmoji players 
 var bitmoji1 = new Bitmoji1(365,180);
 var bitmoji2 = new Bitmoji2(35, 380);
 
+//bitmoji1 hit bomb, score -1 and the bomb is gone 
 Bitmoji1.prototype.checkForBomsHit = function(boms){
     if ((boms.x >= (bitmoji1.x - 20) && boms.x <= (bitmoji1.x + 20)) &&
         (boms.y >= (bitmoji1.y -25) && boms.y <= (bitmoji1.y + 25))) {
@@ -211,6 +216,7 @@ Bitmoji1.prototype.checkForBomsHit = function(boms){
     }
 };
 
+//bitmoji2 hit bomb, score -1 and the bomb is gone 
 Bitmoji2.prototype.checkForBomsHit = function(boms){
     if ((boms.x >= (bitmoji2.x - 20) && boms.x <= (bitmoji2.x + 20)) &&
         (boms.y >= (bitmoji2.y -25) && boms.y <= (bitmoji2.y + 25))) {
@@ -220,6 +226,7 @@ Bitmoji2.prototype.checkForBomsHit = function(boms){
     }
 };
 
+//stars object class
 var Stars = function(x, y) {
     this.x = x;
     this.y = y;
@@ -229,12 +236,14 @@ Stars.prototype.draw = function() {
     image(getImage("cute/Star"), this.x, this.y , 30, 30);
 };
 
+//star's initial position and speed
 var stars = [];
 for (var i = 0; i < numStars; i++) {  
     stars.push(new Stars(i * 100 + 500, random(0, 380)));
     starsSpeed.push(random(1,4));
 }
 
+//bimoji1 hit stars, score +2 and the star is gone 
 Bitmoji1.prototype.checkForStarsHit = function(stars){
     if ((stars.x >= (bitmoji1.x - 20) && stars.x <= (bitmoji1.x + 20)) &&
         (stars.y >= (bitmoji1.y -25) && stars.y <= (bitmoji1.y + 25))) {
@@ -244,6 +253,7 @@ Bitmoji1.prototype.checkForStarsHit = function(stars){
     }
 };
 
+//bimoji2 hit stars, score +2 and the star is gone
 Bitmoji2.prototype.checkForStarsHit = function(stars){
     if ((stars.x >= (bitmoji2.x - 20) && stars.x <= (bitmoji2.x + 20)) &&
         (stars.y >= (bitmoji2.y -25) && stars.y <= (bitmoji2.y + 25))) {
@@ -253,7 +263,7 @@ Bitmoji2.prototype.checkForStarsHit = function(stars){
     }
 };
 
-//button
+//button object class
 var Button = function(config) {
     this.x = config.x || 0;
     this.y = config.y || 0;
@@ -277,19 +287,21 @@ Button.prototype.isMouseInside = function() {
            mouseY < (this.y + this.height);
 };
 
+//starts the game 
 var start = new Button({
     x: 295,
     y: 300,
     label: "Start"
 });
 
-//buttons work
+//click the button 
 mouseClicked = function() {
     if (start.isMouseInside()) {
         drawScene2();
     }
 };
-//draw function that has the circle tag, for loops which includes if the bitmoji is tagged or not
+
+//draw function that draws the first scene if current scene is 1, if the current scene is not 1, then it draws the app scene
 var draw = function(){
     if(currentScene === 1){
     drawScene1();
@@ -298,16 +310,19 @@ var draw = function(){
         background(24, 46, 135);
         stroke(0, 0, 0);
         fill(255, 255, 255);
+        //score display
         text("Player 1 score: " + bitmoji1.score, 20, 25); 
         text("Player 2 score: " + bitmoji2.score, 20, 50);
-    
+        
+        //draws bombs
         for (var i = 0; i < boms.length; i++) {
                 boms[i].draw();
                 boms[i].x -= bomsSpeed[i];
                 bitmoji1.checkForBomsHit(boms[i]);
                 bitmoji2.checkForBomsHit(boms[i]);
         }
-            
+         
+        //draws stars    
         for (var i = 0; i < stars.length; i++) {
                 stars[i].draw();
                 stars[i].x -= starsSpeed[i];
@@ -315,6 +330,7 @@ var draw = function(){
                 bitmoji2.checkForStarsHit(stars[i]);
         }
         
+        //UI, bitmoji1's movment
         if (keyIsPressed && keyCode === UP) {
             bitmoji1.up();
         } else if(keyIsPressed && keyCode === DOWN) {
@@ -327,6 +343,7 @@ var draw = function(){
         }
         bitmoji1.draw();
         
+        //UI, bitmoji2's movment
         if (keyIsPressed && key.code === 119) {
             bitmoji2.up();
         } else if(keyIsPressed && key.code === 115) {
@@ -354,4 +371,3 @@ var draw = function(){
         }
     }
 };
-
