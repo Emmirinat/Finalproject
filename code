@@ -107,6 +107,13 @@ var drawScene1 = function() {
     text("By: Emma Rinat", 20, 370);
     textSize(15);
     drawBitmoji1(84, 249, 130);
+    //new shirt
+    noStroke();
+    fill(139, 187, 247);
+    rect(48, 284, 73, 45);
+    fill(255, 255, 255);
+    textSize(30);
+    text("ER",64, 317);
 };
 
 //second scene= app scene
