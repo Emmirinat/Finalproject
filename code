@@ -116,11 +116,6 @@ var drawScene1 = function() {
     text("ER",64, 317);
 };
 
-//second scene= app scene
-var drawScene2 = function() {
-    currentScene = 2;
-};
-
 var bomsSpeed = [];//array for bombs speed
 var starsSpeed = [];//array for stars speed
 var numBoms = 300;//number of bombs
@@ -304,7 +299,7 @@ var start = new Button({
 //click the button 
 mouseClicked = function() {
     if (start.isMouseInside()) {
-        drawScene2();
+        currentScene = 2;
     }
 };
 
